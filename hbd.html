@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Yudish!</title>
+  <style>
+    /* ===== RESET & BODY ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1b2347 0%, #0e1327 50%, #0a0f1f 100%);
+      color: white;
+      text-align: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ===== CANVAS ===== */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+
+    /* ===== BACKGROUND EFFECTS ===== */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stars::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(2px 2px at 10% 20%, #fff 90%, transparent),
+        radial-gradient(2px 2px at 20% 40%, #fff 90%, transparent),
+        radial-gradient(2px 2px at 30% 70%, #fff 90%, transparent),
+        radial-gradient(2px 2px at 40% 30%, #fff 90%, transparent),
+        radial-gradient(2px 2px at 50% 50%, #fff 90%, transparent),
+        radial-gradient(2px 2px at 60% 80%, #fff 90%, transparent),
+        radial-gradient(2px 2px at 80% 20%, #fff 90%, transparent);
+      opacity: 0.6;
+      animation: twinkle 4s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.4; }
+      to { opacity: 1; }
+    }
+
+    .shooting {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .shooting span {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 10px 4px white;
+      animation: shoot 3s linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes shoot {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      70% { transform: translate(-140vw, 40vh) scale(1.5); opacity: 1; }
+      100% { transform: translate(-160vw, 55vh) scale(0.2); opacity: 0; }
+    }
+
+    .shooting span:nth-child(1) { top: 5%; left: 120%; animation-delay: 0s; }
+    .shooting span:nth-child(2) { top: 20%; left: 130%; animation-delay: 0.7s; }
+    .shooting span:nth-child(3) { top: 40%; left: 125%; animation-delay: 1.3s; }
+    .shooting span:nth-child(4) { top: 60%; left: 140%; animation-delay: 2.1s; }
+    .shooting span:nth-child(5) { top: 80%; left: 128%; animation-delay: 3s; }
+
+    /* ===== FOTO GALLERY ===== */
+    .photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin: 6px;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.467);
+      opacity: 0;
+      animation: fadeIn 1.2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .gallery-top {
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      z-index: 5;
+    }
+
+    .gallery-bottom {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      z-index: 5;
+    }
+
+    .gallery-side-left,
+    .gallery-side-right {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 5;
+    }
+
+    .gallery-side-left { left: 10px; }
+    .gallery-side-right { right: 10px; }
+
+    /* ===== CARD ===== */
+    .hero {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .card {
+      pointer-events: auto;
+      background: linear-gradient(180deg, #121a36aa, #0d122b88);
+      border: 1px solid #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      width: 75%;
+      max-width: 420px;
+      box-shadow: 0 8px 32px #0009, inset 0 0 30px #5b6bff14;
+      animation: floaty 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes floaty {
+      from { transform: translateY(0); }
+      to { transform: translateY(-4px); }
+    }
+
+    .card h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .card p {
+      font-size: 16px;
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+    .wishes-btn {
+      margin-top: 15px;
+      padding: 8px 16px;
+      background: #ffd166;
+      color: #0b1020;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 12px;
+      transition: transform 0.2s;
+    }
+
+    .wishes-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .social-links {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .social-btn {
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .social-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .big {
+      background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* ===== HIDDEN ELEMENTS ===== */
+    #wishes {
+      display: none;
+    }
+
+    #p1, #p2, #p3, #p4 {
+      font-size: 18px;
+      margin: 5px 0;
+      min-height: 25px;
+    }
+
+    .jump {
+      animation: musicJump 0.3s ease-out;
+    }
+
+    @keyframes musicJump {
+      0% { transform: translateY(0) scale(1); color: #ffd166; }
+      50% { transform: translateY(-15px) scale(1.2); }
+      100% { transform: translateY(0) scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- BACKGROUND EFFECTS -->
+  <div class="stars"></div>
+  <div class="shooting">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- PHOTO GALLERY -->
+  <div class="gallery-top">
+    <img src="YUDISH(2).jpg" class="photo" alt="Yudish">
+    <img src="YUDISH(3).jpg" class="photo" alt="Yudish">
+  </div>
+
+  <div class="gallery-side-left">
+    <img src="YUDISH(4).jpg" class="photo" alt="Yudish">
+    <img src="YUDISH(5).jpg" class="photo" alt="Yudish">
+  </div>
+
+  <div class="gallery-side-right">
+    <img src="YUDISH(6).jpg" class="photo" alt="Yudish">
+    <img src="YUDISH(8).jpg" class="photo" alt="Yudish">
+  </div>
+
+  <div class="gallery-bottom">
+    <img src="YUDISH(1).jpg" class="photo" alt="Yudish">
+    <img src="YUDISH(9).jpg" class="photo" alt="Yudish">
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="hero">
+    <div class="card">
+      <h1><span class="big">Happy Sweet Seventeen!</span><br>YUDISH 🎉</h1>
+      <p id="wishText">Sudah bertumbuh jadi sosok yang luar biasa. Proud of you! Semoga terus berkembang jadi versi terbaik dirimu ❤️</p>
+      <button class="wishes-btn" onclick="changeWish()">Next Wish →</button>
+      
+      <div class="social-links">
+        <a href="https://github.com" class="social-btn" target="_blank">🐙 GitHub</a>
+        <a href="https://instagram.com" class="social-btn" target="_blank">📷 Instagram</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HIDDEN LYRICS CONTAINER -->
+  <div id="wishes">
+    <p id="p1"></p>
+    <p id="p2"></p>
+    <p id="p3"></p>
+    <p id="p4"></p>
+  </div>
+
+  <!-- ANIMATION CANVAS -->
+  <canvas id="canvas"></canvas>
+
+  <script>
+    // ===== WISHES DATA =====
+    const wishes = [
+      "Sudah bertumbuh jadi sosok yang luar biasa. Proud of you! Semoga terus berkembang jadi versi terbaik dirimu ❤️",
+      "Yo, 17 tahun sudah! Congrats! Semoga tahun ini penuh dengan petualangan seru dan kenangan indah bareng kita. Let's go! 🚀",
+      "Happy Sweet Seventeen! Terima kasih telah menjadi bagian berharga dari hidup kami. Semoga hari istimewamu dipenuhi cinta dan kebahagiaan. 💫",
+      "17 tahun dan makin kece! Selamat merayakan milestone spesial ini. You're awesome! 🎊",
+      "Happy 17! Sekarang officially teenager yang lebih tua 😄 Congrats for surviving another year dengan gaya!",
+      "Semoga 17 tahun ini adalah yang terbaik! Terima kasih atas tawa, kenangan, dan cinta yang kamu berikan. You're the best! ✨"
+    ];
+
+    let currentWish = 0;
+
+    function changeWish() {
+      currentWish = (currentWish + 1) % wishes.length;
+      document.getElementById("wishText").textContent = wishes[currentWish];
+    }
+
+    // ===== AUDIO CONTEXT & NOTES =====
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    const notes = [
+      { f: 262, d: .5, t: "Hap", p: document.getElementById("p1") },
+      { f: 262, d: .5, t: "py&nbsp", p: document.getElementById("p1") },
+      { f: 294, d: 1, t: "Birth", p: document.getElementById("p1") },
+      { f: 262, d: 1, t: "day&nbsp", p: document.getElementById("p1") },
+      { f: 349, d: 1, t: "To&nbsp", p: document.getElementById("p1") },
+      { f: 330, d: 2, t: "You", p: document.getElementById("p1") },
+
+      { f: 262, d: .5, t: "Hap", p: document.getElementById("p2") },
+      { f: 262, d: .5, t: "py&nbsp", p: document.getElementById("p2") },
+      { f: 294, d: 1, t: "Birth", p: document.getElementById("p2") },
+      { f: 262, d: 1, t: "day&nbsp", p: document.getElementById("p2") },
+      { f: 392, d: 1, t: "To&nbsp;", p: document.getElementById("p2") },
+      { f: 349, d: 2, t: "You", p: document.getElementById("p2") },
+
+      { f: 262, d: .5, t: "Hap", p: document.getElementById("p3") },
+      { f: 262, d: .5, t: "py&nbsp;", p: document.getElementById("p3") },
+      { f: 523, d: 1, t: "Birth", p: document.getElementById("p3") },
+      { f: 440, d: 1, t: "day&nbsp;", p: document.getElementById("p3") },
+      { f: 349, d: 1, t: "Dear&nbsp;", p: document.getElementById("p3") },
+      { f: 330, d: 1, t: "Frie", p: document.getElementById("p3") },
+      { f: 294, d: 3, t: "nd", p: document.getElementById("p3") },
+
+      { f: 466, d: .5, t: "Hap", p: document.getElementById("p4") },
+      { f: 466, d: .5, t: "py&nbsp;", p: document.getElementById("p4") },
+      { f: 440, d: 1, t: "Birth", p: document.getElementById("p4") },
+      { f: 349, d: 1, t: "day&nbsp;", p: document.getElementById("p4") },
+      { f: 392, d: 1, t: "To&nbsp;", p: document.getElementById("p4") },
+      { f: 349, d: 2, t: "You", p: document.getElementById("p4") },
+    ];
+
+    // ===== CREATE SPAN ELEMENTS =====
+    notes.forEach(note => {
+      const span = document.createElement("span");
+      span.innerHTML = note.t;
+      note.p.appendChild(span);
+      note.sp = span;
+    });
+
+    // ===== SOUND CLASS =====
+    let speed = 0.5;
+    let flag = false;
+    let sounds = [];
+
+    class Sound {
+      constructor(freq, dur, i) {
+        this.frequency = freq;
+        this.waveform = "triangle";
+        this.dur = dur;
+        this.speed = this.dur * speed;
+        this.initialGain = 0.15;
+        this.index = i;
+        this.sp = notes[i].sp;
+      }
+
+      cease() {
+        this.sp.classList.remove("jump");
+        if (this.index < sounds.length - 1) {
+          sounds[this.index + 1].play();
+        } else {
+          flag = false;
+          // Auto loop setelah 1 detik
+          setTimeout(() => {
+            sounds[0].play();
+            flag = true;
+          }, 1000);
+        }
+      }
+
+      play() {
+        this.oscillator = audioCtx.createOscillator();
+        this.gain = audioCtx.createGain();
+
+        this.gain.gain.value = this.initialGain;
+        this.oscillator.type = this.waveform;
+        this.oscillator.frequency.value = this.frequency;
+        this.gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + this.speed);
+
+        this.oscillator.connect(this.gain);
+        this.gain.connect(audioCtx.destination);
+        this.oscillator.start(audioCtx.currentTime);
+
+        this.sp.classList.add("jump");
+        this.oscillator.stop(audioCtx.currentTime + this.speed);
+        this.oscillator.onended = () => this.cease();
+      }
+    }
+
+    // ===== INITIALIZE SOUNDS =====
+    notes.forEach((note, i) => {
+      sounds.push(new Sound(note.f, note.d, i));
+    });
+
+    // ===== AUDIO EVENTS =====
+    let hasStarted = false;
+
+    document.addEventListener('click', () => {
+      if (!hasStarted) {
+        sounds[0].play();
+        flag = true;
+        hasStarted = true;
+      }
+    }, { once: true });
+
+    document.addEventListener('touchstart', () => {
+      if (!hasStarted) {
+        sounds[0].play();
+        flag = true;
+        hasStarted = true;
+      }
+    }, { once: true });
+
+    // ===== CANVAS PARTICLE ANIMATION =====
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    let cw = canvas.width = window.innerWidth;
+    let ch = canvas.height = window.innerHeight;
+
+    let requestId = null;
+    const colors = ["#93DFB8", "#FFC8BA", "#E3AAD6", "#B5D8EB", "#FFBDD8"];
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * cw;
+        this.y = Math.random() * ch;
+        this.r = 15 + ~~(Math.random() * 20);
+        this.l = 3 + ~~(Math.random() * 2);
+        this.a = (2 * Math.PI) / this.l;
+        this.rot = Math.random() * Math.PI;
+        this.speed = 0.05 + Math.random() / 2;
+        this.rotSpeed = 0.005 + Math.random() * 0.005;
+        this.color = colors[~~(Math.random() * colors.length)];
+      }
+
+      update() {
+        if (this.y < -this.r) {
+          this.y = ch + this.r;
+          this.x = Math.random() * cw;
+        }
+        this.y -= this.speed;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rot);
+        ctx.beginPath();
+
+        for (let i = 0; i < this.l; i++) {
+          const x = this.r * Math.cos(this.a * i);
+          const y = this.r * Math.sin(this.a * i);
+          ctx.lineTo(x, y);
+        }
+
+        ctx.closePath();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = this.color;
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+
+    // ===== INITIALIZE PARTICLES =====
+    const particles = [];
+    for (let i = 0; i < 20; i++) {
+      particles.push(new Particle());
+    }
+
+    // ===== ANIMATION LOOP =====
+    function draw() {
+      requestId = window.requestAnimationFrame(draw);
+      ctx.clearRect(0, 0, cw, ch);
+
+      particles.forEach(particle => {
+        particle.rot += particle.rotSpeed;
+        particle.update();
+        particle.draw();
+      });
+    }
+
+    function init() {
+      if (requestId) {
+        window.cancelAnimationFrame(requestId);
+        requestId = null;
+      }
+
+      cw = canvas.width = window.innerWidth;
+      ch = canvas.height = window.innerHeight;
+      draw();
+    }
+
+    // ===== START ANIMATION =====
+    setTimeout(() => {
+      init();
+      window.addEventListener('resize', init);
+    }, 15);
+  </script>
+</body>
+</html>
+
+</body>
+</html>
