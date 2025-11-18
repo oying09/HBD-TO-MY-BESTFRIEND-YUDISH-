@@ -1,0 +1,59 @@
+/* Extracted styles from hbd.html */
+/* ===== RESET & BODY ===== */
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:Arial, sans-serif;
+  background: linear-gradient(135deg, #1b2347 0%, #0e1327 50%, #0a0f1f 100%);
+  color:white;
+  text-align:center;
+  min-height:100vh;
+  overflow:hidden;
+}
+
+/* ===== CANVAS ===== */
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block;z-index:1}
+
+/* ===== BACKGROUND EFFECTS ===== */
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+.stars::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 10% 20%, #fff 90%, transparent),radial-gradient(2px 2px at 20% 40%, #fff 90%, transparent),radial-gradient(2px 2px at 30% 70%, #fff 90%, transparent),radial-gradient(2px 2px at 40% 30%, #fff 90%, transparent),radial-gradient(2px 2px at 50% 50%, #fff 90%, transparent),radial-gradient(2px 2px at 60% 80%, #fff 90%, transparent),radial-gradient(2px 2px at 80% 20%, #fff 90%, transparent);opacity:.6;animation:twinkle 4s infinite alternate}
+@keyframes twinkle{from{opacity:.4}to{opacity:1}}
+
+.shooting{position:fixed;inset:0;pointer-events:none;z-index:0}
+.shooting span{position:absolute;width:3px;height:3px;background:white;border-radius:50%;box-shadow:0 0 10px 4px white;animation:shoot 3s linear infinite;opacity:0}
+@keyframes shoot{0%{transform:translate(0,0) scale(1);opacity:1}70%{transform:translate(-140vw,40vh) scale(1.5);opacity:1}100%{transform:translate(-160vw,55vh) scale(0.2);opacity:0}}
+.shooting span:nth-child(1){top:5%;left:120%;animation-delay:0s}
+.shooting span:nth-child(2){top:20%;left:130%;animation-delay:0.7s}
+.shooting span:nth-child(3){top:40%;left:125%;animation-delay:1.3s}
+.shooting span:nth-child(4){top:60%;left:140%;animation-delay:2.1s}
+.shooting span:nth-child(5){top:80%;left:128%;animation-delay:3s}
+
+/* ===== PHOTO GALLERY ===== */
+.photo{width:150px;height:150px;border-radius:12px;object-fit:cover;margin:6px;border:2px solid rgba(255,255,255,0.4);box-shadow:0 0 12px rgba(255,255,255,0.467);opacity:0;animation:fadeIn 1.2s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.gallery-top{position:absolute;top:10px;width:100%;display:flex;justify-content:center;flex-wrap:wrap;z-index:5}
+.gallery-bottom{position:absolute;bottom:10px;width:100%;display:flex;justify-content:center;flex-wrap:wrap;z-index:5}
+.gallery-side-left,.gallery-side-right{position:absolute;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:5}
+.gallery-side-left{left:10px}
+.gallery-side-right{right:10px}
+
+/* ===== CARD ===== */
+.hero{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:10}
+.card{pointer-events:auto;background:linear-gradient(180deg,#121a36aa,#0d122b88);border:1px solid #ffffff;border-radius:16px;padding:20px;width:75%;max-width:420px;box-shadow:0 8px 32px #0009,inset 0 0 30px #5b6bff14;animation:floaty 6s ease-in-out infinite alternate}
+@keyframes floaty{from{transform:translateY(0)}to{transform:translateY(-4px)}}
+.card h1{font-size:32px;margin-bottom:10px;letter-spacing:1px}
+.card p{font-size:16px;margin:10px 0;line-height:1.5}
+.big{background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* hidden lyrics container (used by script) */
+#wishes{display:none}
+#p1,#p2,#p3,#p4{font-size:18px;margin:5px 0;min-height:25px}
+.jump{animation:musicJump 0.3s ease-out}
+@keyframes musicJump{0%{transform:translateY(0) scale(1);color:#ffd166}50%{transform:translateY(-15px) scale(1.2)}100%{transform:translateY(0) scale(1)}}
+
+/* wishes button + social */
+.wishes-btn{margin-top:15px;padding:8px 16px;background:#ffd166;color:#0b1020;border:none;border-radius:20px;font-weight:700;cursor:pointer;font-size:12px}
+.wishes-btn:hover{transform:scale(1.05)}
+.social-links{margin-top:15px;display:flex;gap:10px;justify-content:center}
+.social-btn{padding:8px 14px;background:rgba(255,255,255,0.2);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:20px;font-size:12px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.social-btn:hover{background:rgba(255,255,255,0.3);transform:translateY(-2px)}
